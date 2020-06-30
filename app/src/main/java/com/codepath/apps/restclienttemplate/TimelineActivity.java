@@ -51,6 +51,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "onSuccess!" + json.toString());
                 JSONArray jsonArray = json.jsonArray;
+                Log.i(TAG, client.toString());
 
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
