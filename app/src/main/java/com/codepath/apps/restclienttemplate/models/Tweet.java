@@ -16,6 +16,7 @@ public class Tweet {
     public String media;
     public int mHeight;
     public int mWidth;
+    public long id;
 
     // empty constructor needed by the parcel library
     public Tweet() {}
@@ -25,6 +26,7 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        tweet.id = jsonObject.getLong("id");
 
         JSONObject entities = jsonObject.getJSONObject("entities");
         // check if media entry exists
