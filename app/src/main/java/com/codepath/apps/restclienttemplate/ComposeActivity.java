@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -55,6 +56,9 @@ public class ComposeActivity extends AppCompatActivity {
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        // on some click or some loading we need to wait for...
+                        ProgressBar pb = (ProgressBar) findViewById(R.id.pbLoading);
+                        pb.setVisibility(ProgressBar.VISIBLE);
                         Log.i(TAG, "onSuccess to publish tweet");
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
@@ -64,9 +68,13 @@ public class ComposeActivity extends AppCompatActivity {
                             // set result code and bundle data for response
                             setResult(RESULT_OK, i);
                             // closes the activity, pass data to parent
+                            // run a background job and once complete
+                            pb.setVisibility(ProgressBar.INVISIBLE);
                             finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // run a background job and once complete
+                            pb.setVisibility(ProgressBar.INVISIBLE);
                         }
                     }
 

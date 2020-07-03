@@ -17,6 +17,7 @@ public class Tweet {
     public int mHeight;
     public int mWidth;
     public long id;
+    public String profileImage;
 
     // empty constructor needed by the parcel library
     public Tweet() {}
@@ -27,6 +28,7 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.id = jsonObject.getLong("id");
+        tweet.profileImage = tweet.user.profileImageUrl;
 
         JSONObject entities = jsonObject.getJSONObject("entities");
         // check if media entry exists
@@ -36,6 +38,11 @@ public class Tweet {
             JSONObject sizes = media.getJSONObject("sizes").getJSONObject("small");
             tweet.mHeight = sizes.getInt("h");
             tweet.mWidth = sizes.getInt("w");
+        }
+        else {
+            tweet.media = "";
+            tweet.mHeight = 0;
+            tweet.mWidth = 0;
         }
 
         return tweet;
@@ -49,5 +56,21 @@ public class Tweet {
         }
 
         return tweets;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
     }
 }

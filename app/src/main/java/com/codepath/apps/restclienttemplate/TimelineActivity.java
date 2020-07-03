@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -82,6 +83,9 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void loadMoreData() {
+        // on some click or some loading we need to wait for...
+        final ProgressBar pb = (ProgressBar) findViewById(R.id.pbLoading);
+        pb.setVisibility(ProgressBar.VISIBLE);
         // Send an API request to retrieve appropriate paginated data
         client.getNextPageofTweets(new JsonHttpResponseHandler() {
             @Override
@@ -94,8 +98,12 @@ public class TimelineActivity extends AppCompatActivity {
                     //  --> Append the new data objects to the existing set of items inside the array of items
                     //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
                     adapter.addAll(tweets);
+                    // run a background job and once complete
+                    pb.setVisibility(ProgressBar.INVISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    // run a background job and once complete
+                    pb.setVisibility(ProgressBar.INVISIBLE);
                 }
             }
 
